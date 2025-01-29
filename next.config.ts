@@ -11,8 +11,11 @@ const withNextra = nextra({
 const nextConfig: NextConfig = withNextra({
   output: "export",
   reactStrictMode: true,
-  basePath: "/nextra-4-doc-boilerplate",
-  assetPrefix: "/nextra-4-doc-boilerplate",
+  basePath: "/paper",
+  assetPrefix: "/paper",
+  images: {
+    unoptimized: true,
+  },
 });
 
 export default nextConfig;

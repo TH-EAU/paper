@@ -1,0 +1,119 @@
+---
+asIndexPage: true
+title: Chapitre 2 - Les requêtes HTTP
+sideBarTitle: Chapitre 2 - Les requêtes HTTP
+---
+
+_Dans ce chapitre nous allons passer en revue le fonctionnement des requêtes HTTP, qui nous permettrons de créer un liens entre l'application cliente et l'API_
+
+_Dans un contexte réseau, un protocole est un ensemble de règles qui régissent les échanges de données._
+
+_Tout élément du web possède une adresse IP. Celle-ci, à l'instar d'une adresse postale, défini en quelque sorte la position de l'élément connecté._
+
+# Protocole http
+
+HTTP (HyperText Transfert Protocol) est le protocole qui permet de transmettre des données sur le web.
+
+Pour cela nous pouvons émettre une `requête`. Cette requête peut, ou non, attendre une réponse :
+
+![[Proto HTTP.svg]]
+Le `client` est toujours celui qui formule la requête, tandis que le `server` est celui qui la reçois et la traite
+
+## Les caractéristiques du protocole HTTP
+
+- Il ne peux récupérer qu'une seule ressource à la fois
+- Il est `stateless` c'est à dire qu'il n'enregistre aucune données sur lui même son état ou son historique
+
+## Un server HTTP ?
+
+Par défaut le port d'un serveur sur lequel vous aurez accès au HTTP est le 80. Vous pouvez servir votre API sur un autre port, http est déjà implémenté dans la plupart des framework.
+
+## HTTPS
+
+Le protocole HTTPS est une version de HTTP dans laquelle on a implémenté le protocole de sécurisation TLS, son port par défaut est 443
+
+# Requêtes et Réponses HTTP
+
+## Anatomie d'une requête
+
+Le contenu d'une requête se sépare en deux parties :
+
+- Le header
+- Le body
+
+> On peut faire une analogie avec une lettre en papier. L'enveloppe correspond aux headers. On y retrouve l'adresse du destinataire, celle de l'expéditeur, et tout pleins d'informations concernant la réponse que l'on souhaite obtenir.
+>
+> Tandis que la lettre à l'intérieur de l'enveloppe correspond au body, qui contient toutes les informations que l'on souhaite transmettre au serveur.
+
+@TODO, mettre un exemple de requête
+
+### La méthode de requête
+
+On peut comparer la méthode de requête avec le type de lettre que l'on transmet :
+
+- Si je transmet une carte postale, je ne suis pas obligé de mettre d'enveloppe. Je griffonne quelques mots au dos d'une carte postale, en y mettant les informations pour qu'elle atteigne sont destinataire, et c'est bon. On peut comparer la carte postale à **la méthode GET, car elle ne possède pas de body**
+- Quand à l'enveloppe avec une lettre, un document voir même un objet à l'intérieur, on pourras la comparer aux méthodes POST, UPDATE, DELETE.
+
+#### Pourquoi utiliser plusieurs types de méthodes
+
+En soit, il est possible de toujours envoyer une enveloppe, et de la même manière, pourquoi utiliser des méthodes différentes si les méthodes POST, UPDATE, et DELETE sont similaires ?
+
+> Actuellement, certains développeurs n'utilisent que la requête POST
+
+Les différentes méthodes n'ont pas du tout le même objectif. Effectivement la requête POST peut tout faire, mais elle transmet un body la ou je n'en ai pas besoin. Cela est un gâchis de ressource si je souhaite simplement récupérer un élément. Quand aux autre méthodes, il s'agit essentiellement d'organisation, éviter d'utiliser POST pour supprimer un élément, est plus pertinent et permet de mieux s'y retrouver.
+
+#### A quoi servent des différentes méthodes ?
+
+##### GET
+
+Avec la requête GET, il est possible de récupérer facilement des données depuis notre serveur. Le mot clé "get" est explicite. Il est possible de préciser des critères dans l'url de la requête ( dans l'adresse du destinataire)
+
+exemple : `https://http.cat/401`
+où :
+
+- `https` est le protocole
+- `http.cat` est le nom de domaine qui pointe vers l'adresse de l'api
+- `401` est l'élément que je veux récupérer, donc un paramètre de la requête
+
+##### POST
+
+Avec la requête POST, on va demander au server de créer un entité à partir du body que l'on lui envoie.
+
+##### PUT
+
+Permet de modifier une ressource, il n'est pas nécessaire de renvoyer toute l'entité pour qu'elle soit remplacée, mais juste les attributs qui ont changés.
+
+##### DELETE
+
+Permet de supprimer un entité
+
+## Réponse HTTP
+
+La réponse HTTP se découpe elle aussi en deux parties :
+
+- Les headers où l'on retrouve le statut de la requête
+- Le body où l'on trouvera le contenu de la réponse du serveur
+
+### Code de statut HTTP
+
+il existe beaucoup de code statut HTTP et ils ont tous une signification :
+
+- Un code 1xx indique une réponse provisoire (non implémenté avec HTTP/1.0) ;
+- Un code 2xx (200, 201, 202, 204) indique que la requête a été traitée avec succès ;
+- Un code 3xx(300, 301, 302, 304) indique que la requête doit être redirigée ;
+- Un code 4xx (400, 401, 403, 404) indique une erreur côté client ;
+- Un code 5xx (500, 501, 502, 503) indique une erreur côté serveur.
+
+_L'api http.cat renvoie des chats pour chaque code de statut HTTP existant_
+
+Il existe une documentation détaillée pour chacun d'eux. Les plus importants et courants sont les suivants :
+
+- **200** : Ok()
+- **301**: La ressource à été déplacée et la nouvelle url est indiquée dans le header `Location`
+- **403** : Forbid() Forbidden, indique que le serveur répond bien mais qu'il vous interdit d'accéder à la ressource souhaitée.
+- **404** : Not Found(), Le serveur n'as pas trouvé la resource que vous avez demandé
+- **500**: Internal Server Error, le serveur n'as pas pu répondre à la demande, il peut y avoir plusieurs raison, notamment que le serveur à crashé, n'as pas démarré ou bien est bloqué par quelque chose.
+
+_source et bibliographie : https://www.pierre-giraud.com/http-reseau-securite-cours/requete-reponse-session/_
+
+**Il est conseillé d'aller voir cette source qui est très complète**
